@@ -13,26 +13,29 @@ public class User {
     @Id
     @GeneratedValue
     private long id;
+
     @NotBlank(message = "O nome é obrigatório")
     private String name;
+
     @NotBlank(message = "O email é obrigatório")
     @Email
     @Column(unique = true)
     private String email;
+
     @NotNull
     @NotBlank
     @Size(min = 8, max=16)
     private String password;
+
+    public User() {
+
+    }
 
     public User(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public User() {
-
     }
 
     public long getId() {
