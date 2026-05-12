@@ -2,6 +2,7 @@ package com.account.system.service;
 
 import com.account.system.configuration.SecurityConfigurations;
 import com.account.system.dto.request.UserRegisterDTO;
+import com.account.system.dto.response.LoginResponseDTO;
 import com.account.system.dto.response.UserResponseDTO;
 import com.account.system.entity.Users;
 import com.account.system.repository.UserRepository;
@@ -31,6 +32,13 @@ public class UserService {
         Users savedUser = repository.save(user);
 
         return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail());
+    }
+
+    public LoginResponseDTO login(String email, String password) {
+        Users user = repository.findByEmail(email).orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        if(!encoder.matches(password, user.getPassword())) throw new RuntimeException("Invalid credentials");
+
+        return new LoginResponseDTO("Login realizado com sucesso!");
     }
 
 }
