@@ -2,7 +2,7 @@ package com.account.system.service;
 
 import com.account.system.dto.request.UserRegisterDTO;
 import com.account.system.dto.response.UserResponseDTO;
-import com.account.system.entity.User;
+import com.account.system.entity.Users;
 import com.account.system.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +19,12 @@ public class UserService {
 
         if(present) throw new RuntimeException("Email already exists");
 
-        User user = new User();
+        Users user = new Users();
         user.setName(userRegisterDTO.name());
         user.setEmail(userRegisterDTO.email());
         user.setPassword(userRegisterDTO.password());
 
-        User savedUser = repository.save(user);
+        Users savedUser = repository.save(user);
 
         return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail());
     }

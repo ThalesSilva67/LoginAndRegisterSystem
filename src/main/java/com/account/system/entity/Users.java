@@ -9,9 +9,9 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table
-public class User {
+public class Users {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank(message = "O nome é obrigatório")
@@ -22,16 +22,15 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @NotNull
     @NotBlank
     @Size(min = 8, max=16)
     private String password;
 
-    public User() {
+    public Users() {
 
     }
 
-    public User(Long id, String name, String email, String password) {
+    public Users(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
