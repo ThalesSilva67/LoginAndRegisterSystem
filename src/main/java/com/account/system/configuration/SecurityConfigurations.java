@@ -22,6 +22,7 @@ public class SecurityConfigurations {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users/register").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/users/login").permitAll();
                     req.requestMatchers("/h2-console/**").permitAll();
                     req.anyRequest().authenticated();
                 })
