@@ -1,6 +1,8 @@
 package com.account.system.controller;
 
+import com.account.system.dto.request.LoginRequestDTO;
 import com.account.system.dto.request.UserRegisterDTO;
+import com.account.system.dto.response.LoginResponseDTO;
 import com.account.system.dto.response.UserResponseDTO;
 import com.account.system.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@RequestBody UserRegisterDTO user) {
         UserResponseDTO response = service.register(user);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO user) {
+        LoginResponseDTO response = service.login(user.email(), user.password());
 
         return ResponseEntity.ok(response);
     }
