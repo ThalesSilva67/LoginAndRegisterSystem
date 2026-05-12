@@ -18,6 +18,7 @@ public class SecurityConfigurations {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users/register").permitAll();
+                    req.requestMatchers("/h2-console/**").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .build();
