@@ -5,6 +5,8 @@ import com.account.system.dto.request.UserRegisterDTO;
 import com.account.system.dto.response.LoginResponseDTO;
 import com.account.system.dto.response.UserResponseDTO;
 import com.account.system.entity.Users;
+import com.account.system.exceptions.DuplicateEmailException;
+import com.account.system.exceptions.InvalidCredentialsException;
 import com.account.system.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, SecurityConfigurations security, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         repository = userRepository;
         this.encoder = encoder;
     }
@@ -22,7 +24,7 @@ public class UserService {
     public UserResponseDTO register(UserRegisterDTO userRegisterDTO) {
         boolean present = repository.findByEmail(userRegisterDTO.email()).isPresent();
 
-        if(present) throw new RuntimeException("Email already exists");
+        if(present) throw new DuplicateEmailException("Email already exists");
 
         Users user = new Users();
         user.setName(userRegisterDTO.name());
@@ -35,8 +37,8 @@ public class UserService {
     }
 
     public LoginResponseDTO login(String email, String password) {
-        Users user = repository.findByEmail(email).orElseThrow(() -> new RuntimeException("Invalid credentials"));
-        if(!encoder.matches(password, user.getPassword())) throw new RuntimeException("Invalid credentials");
+        Users user = repository.findByEmail(email).orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
+        if(!encoder.matches(password, user.getPassword())) throw new InvalidCredentialsException("Invalid credentials");
 
         return new LoginResponseDTO("Login realizado com sucesso!");
     }
