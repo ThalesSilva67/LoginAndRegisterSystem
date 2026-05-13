@@ -1,6 +1,5 @@
 package com.account.system.service;
 
-import com.account.system.configuration.SecurityConfigurations;
 import com.account.system.dto.request.UserRegisterDTO;
 import com.account.system.dto.response.LoginResponseDTO;
 import com.account.system.dto.response.UserResponseDTO;
@@ -12,11 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class AccountService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+    public AccountService(UserRepository userRepository, PasswordEncoder encoder) {
         repository = userRepository;
         this.encoder = encoder;
     }
@@ -36,11 +35,11 @@ public class UserService {
         return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail());
     }
 
-    public LoginResponseDTO login(String email, String password) {
+    public Users login(String email, String password) {
         Users user = repository.findByEmail(email).orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
         if(!encoder.matches(password, user.getPassword())) throw new InvalidCredentialsException("Invalid credentials");
 
-        return new LoginResponseDTO("Login realizado com sucesso!");
+        return user;
     }
 
 }
